@@ -1,0 +1,96 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# If you wish the Daemon to be lauched at boot / stopped at shutdown :
+#
+#    On Debian-based distributions:
+#      INSTALL : update-rc.d scriptname defaults
+#      (UNINSTALL : update-rc.d -f  scriptname remove)
+#
+#    On RedHat-based distributions (CentOS, OpenSUSE...):
+#      INSTALL : chkconfig --level 35 scriptname on
+#      (UNINSTALL : chkconfig --level 35 scriptname off)
+#
+# chkconfig:         2345 90 60
+# Provides:          /home/ksato/Project/bambooNuxt
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: forever running /home/ksato/Project/bamboo-nuxt
+# Description:       /home/ksato/Project/bambooNuxt
+### END INIT INFO
+#
+# initd a node app
+# Based on a script posted by https://gist.github.com/jinze at https://gist.github.com/3748766
+#
+
+if [ -e /lib/lsb/init-functions ]; then
+	# LSB source function library.
+	. /lib/lsb/init-functions
+fi;
+
+pidFile="/var/run/bambooNuxt.pid"
+logFile="/var/run/bambooNuxt.log"
+
+command="node"
+nodeApp="/usr/bin/npm --prefix /home/ksato/Project/bamboo-nuxt/ run start"
+foreverApp="forever"
+appName="bambooNuxt"
+
+start() {
+	echo -e "Starting $nodeApp\n"
+
+	# Notice that we change the PATH because on reboot
+	# the PATH does not include the path to node.
+	# Launching forever with a full path
+	# does not work unless we set the PATH.
+	PATH=/usr/local/bin:$PATH
+	export NODE_ENV=production
+	#PORT=80
+	$foreverApp start --pidFile $pidFile -l $logFile -a -d -c "$command" $nodeApp
+	RETVAL=$?
+}
+
+restart() {
+	stop
+	start
+	RETVAL=$?
+}
+
+stop() {
+	if [ -e $pidFile ]; then
+		echo -n "Shutting down $nodeApp\n"
+		cat $pidFile | xargs $foreverApp stop
+	fi
+	RETVAL=$?
+}
+
+status() {
+	if [ -e $pidFile ]; then
+		pid=$(cat $pidFile)
+		echo -e -n "$appName (pid: $pid) is running...\n"
+	else
+		echo -e -n "$appName is stopped\n"
+	fi
+	RETVAL=$?
+}
+
+case "$1" in
+   start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+   status)
+        status
+       ;;
+   restart)
+   	restart
+        ;;
+	*)
+       echo "Usage:  {start|stop|status|restart}"
+       exit 1
+        ;;
+esac
+exit $RETVAL
