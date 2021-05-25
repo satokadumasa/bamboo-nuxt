@@ -58,8 +58,8 @@ export default {
   },
 
   server: {
-    port: 3000,
-    host: 'localhost',
+    port: envSet.port,
+    host: envSet.host,
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
