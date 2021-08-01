@@ -1,3 +1,7 @@
+template>
+  <FullCalendar default-view="dayGridMonth" :plugins="calendarPlugins" />
+</template>
+
 <template>
   <FullCalendar
     default-view="dayGridMonth"
@@ -7,7 +11,6 @@
     :plugins="calendarPlugins"
     :events="calendarEvents"
     @dateClick="handleDateClick"
-    @eventClick="editEvent"
   />
 </template>
 
@@ -22,9 +25,6 @@ export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
-  setup() {
-    this.fetchSchedule();
-  },
   data () {
     return {
       locale: jaLocale, // 日本語化
@@ -34,10 +34,6 @@ export default {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
-      navLinks: true,
-      editable: true,
-      selectable: true,
-      height: 'auto',
       calendarWeekends: true, // 土日を表示するか
       // カレンダーで使用するプラグイン
       calendarPlugins: [ 
@@ -45,42 +41,36 @@ export default {
         timeGridPlugin,
         interactionPlugin
       ],
-      
-      timeFormat: { // for event elements
-        '': 'h(:mm)t' // default
-      },
       // カレンダーに表示するスケジュール一覧
-      calendarEvents: [],
+      calendarEvents:  [
+        {
+          title: '報告会',
+          start: '2019-09-09T10:00:00',
+          end : '2019-09-09T12:30:00',
+        },
+        {
+          title: 'ミーティング',
+          start: '2019-09-12T10:30:00',
+          end : '2019-09-12T12:30:00',
+        },
+        {
+          title: '打ち合わせ',
+          start: '2019-09-18T13:30:00',
+          end : '2019-09-18T14:30:00',
+        },
+      ]
     }
   },
   methods: {
-    handleDateClick(arg) {
+    handleDateClick (arg) {
       if (confirm('新しいスケジュールを' + arg.dateStr + 'に追加しますか ?')) {
-        this.calendarEvents.push({
+        this.calendarEvents.push({ // add new event data
           title: '新規スケジュール',
           start: arg.date,
           allDay: arg.allDay
         })
       }
-    },
-    fetchSchedule() {
-      this.$axios.get(`fetchSchedule`).then(response => {
-        console.log("fetchSchedule() SUCCESS");
-        console.log("fetchSchedule() response.data:" + JSON.stringify(response.data));
-        this.calendarEvents = response.data;
-      }).catch(error => {
-        console.log("fetchSchedule() FALSE");
-      }).finally(() => this.id = 0);
-    },
-    editEvent(info) {
-      console.log('id: ' + info.event.id);
-      console.log('title: ' + info.event.title);
-      console.log('start: ' + info.event.start);
-      console.log('allDay: ' + info.event.allDay);
-      console.log('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-      console.log('View: ' + info.view.type);
-      info.el.style.borderColor = 'red';
-    },
+    }
   }
 }
 </script>
@@ -88,14 +78,4 @@ export default {
 @import '~/node_modules/@fullcalendar/core/main.css';
 @import '~/node_modules/@fullcalendar/daygrid/main.css';
 @import '~/node_modules/@fullcalendar/timegrid/main.css';
-.fc-sun {
-  color: red;
-  background-color: #fff0f0;
-}
- 
-/* 土曜日 */
-.fc-sat {
-  color: blue;
-  background-color: #f0f0ff;
-}
 </style>
