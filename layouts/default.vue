@@ -12,6 +12,9 @@
           <v-list-item>
             <v-list-item-title to="/">USERS</v-list-item-title>
           </v-list-item>
+          <v-list-item>
+            <v-list-item-title to="/users/login">LOGIN</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>

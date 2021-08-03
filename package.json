@@ -16,6 +16,7 @@
     "@fullcalendar/interaction": "^4.3.0",
     "@fullcalendar/timegrid": "^4.3.0",
     "@fullcalendar/vue": "^4.3.1",
+    "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.1",
     "core-js": "^3.9.1",
     "nuxt": "^2.15.3"
