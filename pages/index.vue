@@ -24,6 +24,7 @@ export default {
   },
   setup() {
     this.fetchSchedule();
+    console.log('dddddd');
   },
   data () {
     return {

@@ -27,6 +27,11 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
+  },
+
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -34,9 +39,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/vue-full-calendar', ssr: false }
+    { src: '~/plugins/vue-full-calendar', ssr: false },
+    // { src: '~/plugins/axios.js', ssr: false }
   ],
-
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
@@ -51,14 +56,46 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy',
+    '@nuxtjs/auth',
   ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  // headers: {
+  //   'Content-Type': 'application/x-www-form-urlencoded',
+  //   'Accept': 'application/json'
+  // },
   axios: {
     baseURL: envSet.apiBaseURL,
+    // proxy: true,
+  },
+  auth: {
+    redirect: {
+      login: '/users/login',
+      logout: '/users/login',
+      callback: true,
+      home: '/',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/user/auth',
+            method: 'post',
+            propertyName: 'token'
+          },
+          logout: {
+            url: '/users/logout',
+            method: 'post',
+          },
+          user: false,
+        },
+      }
+    }
   },
 
+  router: {
+    middleware: ['auth']
+  },
   server: {
     port: envSet.port,
     host: envSet.host,
