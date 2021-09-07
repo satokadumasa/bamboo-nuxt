@@ -25,6 +25,18 @@
             append-icon="mdi-eye-off"
             label="パスワード確認"
           />
+          <v-text-field
+            v-model="user.name"
+            prepend-icon="mdi-lock"
+            append-icon="mdi-eye-off"
+            label="名前"
+          />
+          <v-text-field
+            v-model="user.nickname"
+            prepend-icon="mdi-lock"
+            append-icon="mdi-eye-off"
+            label="ニックネーム"
+          />
           <v-card-actions>
             <v-btn
               color="light-green darken-1"
@@ -55,8 +67,8 @@ export default {
   },
   methods: {
     registerUser() {
-      this.$axios.post('/api/v1/auth', this.user).then((response) => {
-        window.location.href = '/users/comfirmation'
+      this.$axios.post('/api/auth', this.user).then((response) => {
+        window.location.href = '/users/profile'
       })
     },
   },
