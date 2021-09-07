@@ -69,22 +69,22 @@ export default {
     // proxy: true,
   },
   auth: {
-    redirect: {
-      login: '/users/login',
-      logout: '/users/login',
-      callback: true,
-      home: '/',
-    },
+    // redirect: {
+    //   login: '/users/login',
+    //   logout: '/users/login',
+    //   callback: true,
+    //   home: '/',
+    // },
     strategies: {
       local: {
         endpoints: {
           login: {
-            url: '/user/auth',
+            url: '/api/auth',
             method: 'post',
             propertyName: 'token'
           },
           logout: {
-            url: '/users/logout',
+            url: '/api/auth',
             method: 'post',
           },
           user: false,
