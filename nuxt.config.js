@@ -57,7 +57,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
+    // '@nuxtjs/proxy',
     '@nuxtjs/auth',
   ],
   // headers: {
@@ -71,9 +71,9 @@ export default {
   auth: {
     redirect: {
       login: '/users/login',
-      logout: '/users/login',
-      callback: true,
-      home: '/',
+      redirect: false,
+      localStorage: false
+
     },
     strategies: {
       local: {
@@ -94,6 +94,7 @@ export default {
   },
 
   router: {
+    root: "/",
     middleware: ['auth']
   },
   server: {

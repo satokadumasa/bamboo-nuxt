@@ -82,6 +82,9 @@ export default {
       console.log('View: ' + info.view.type);
       info.el.style.borderColor = 'red';
     },
+    logout() {
+      this.$auth.logout();
+    },
   }
 }
 </script>

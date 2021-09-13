@@ -13,7 +13,14 @@
             <v-list-item-title to="/">USERS</v-list-item-title>
           </v-list-item>
           <v-list-item>
-            <v-list-item-title to="/users/login">LOGIN</v-list-item-title>
+            <v-list-item-title>
+              <a href="/users/login">LOGIN</a>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <a @click="logout()">LOGOUT</a>
+            </v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -74,6 +81,19 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
+  },
+  created() {
+    // ログインしていたら
+    if (this.$auth.loggedIn == true) {
+      console.log("Logged In.");
+    } // loggedIn
+  },
+  methods: {
+      async logout() {
+      await this.$auth.logout();
+      console.log("successfully logged out");
+      this.$router.push("/users/login");
+    },
   }
 }
 </script>

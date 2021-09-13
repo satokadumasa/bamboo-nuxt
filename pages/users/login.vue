@@ -58,16 +58,11 @@ export default {
         .then(
           (response) => {
             // レスポンスで返ってきた、認証に必要な情報をlocalStorageに保存
-            // localStorage.setItem('uid', response.headers['uid'])
-            // localStorage.setItem('access-token', response.headers['access-token'])
-            // localStorage.setItem('client', response.headers.client)
-            // this.$router.push("/");
             localStorage.setItem('email', response.data['email'])
             localStorage.setItem('username', response.data['username'])
             localStorage.setItem('access_token', response.data['access_token'])
             localStorage.setItem('client', response.data.client)
             this.$router.push("/");
-            return response;
           },
           (error) => {
             return error

@@ -1,4 +1,4 @@
-template>
+<template>
   <FullCalendar default-view="dayGridMonth" :plugins="calendarPlugins" />
 </template>
 
